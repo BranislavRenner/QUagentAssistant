@@ -1,0 +1,22 @@
+<!-- Start of FlowHunt integration -->
+<script id="fh-chatbot-script-bb76784a-4976-4440-b5a8-385ed977c283">
+// Get the current script element
+var currentScript = document.currentScript || document.getElementById('fh-chatbot-script-bb76784a-4976-4440-b5a8-385ed977c283');
+
+// Load the chatbot initialization script
+var script = document.createElement('script');
+script.async = true;
+script.src = 'https://app.flowhunt.io/api/chatbot/bb76784a-4976-4440-b5a8-385ed977c283?workspace_id=13388148-367e-4da0-bb94-3acdce03cae6&v=2';
+script.onload = function() {  // Initialize the chatbot and get the manager instance
+  window.FHChatbot_bb76784a_4976_4440_b5a8_385ed977c283.init(function(chatbotManager) {});
+};
+
+// Insert the script right after the current script element
+if (currentScript && currentScript.parentNode) {
+  currentScript.parentNode.insertBefore(script, currentScript.nextSibling);
+} else {
+  // Fallback to document.head if no script element is found
+  document.head.appendChild(script);
+}
+</script>
+<!-- End of FlowHunt integration -->
