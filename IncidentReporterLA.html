@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>LA Incident reporter</title>
+</head>
+<body>
+
+<!-- Start of FlowHunt integration -->
+<script id="fh-chatbot-script-534edbef-d95b-49e2-bcba-28eca2d20e6f">
+// Get the current script element
+var currentScript = document.currentScript || document.getElementById('fh-chatbot-script-534edbef-d95b-49e2-bcba-28eca2d20e6f');
+
+// Load the chatbot initialization script
+var script = document.createElement('script');
+script.async = true;
+script.src = 'https://app.flowhunt.io/api/chatbot/534edbef-d95b-49e2-bcba-28eca2d20e6f?workspace_id=4d1adbc8-edfa-48c1-b93a-a8096d28f5e7&v=2';
+script.onload = function() {  // Initialize the chatbot and get the manager instance
+  window.FHChatbot_534edbef_d95b_49e2_bcba_28eca2d20e6f.init(function(chatbotManager) {});
+};
+
+// Insert the script right after the current script element
+if (currentScript && currentScript.parentNode) {
+  currentScript.parentNode.insertBefore(script, currentScript.nextSibling);
+} else {
+  // Fallback to document.head if no script element is found
+  document.head.appendChild(script);
+}
+</script>
+<!-- End of FlowHunt integration -->
+
+</body>
+</html>
