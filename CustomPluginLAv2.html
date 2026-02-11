@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Incident reporters</title>
+  <style>
+    body>div>h1 {
+      display: none;
+    }
+
+    .report-buttons{
+      display:flex;
+      gap:12px;
+      padding:20px;
+      align-items:center;
+    }
+
+    .report-buttons button{
+      padding:10px 14px;
+      font-size:15px;
+      border-radius:6px;
+      border:1px solid #cfcfcf;
+      background:#ffffff;
+      cursor:pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="report-buttons" role="region" aria-label="Incident report actions">
+    <a href="https://branislavrenner.github.io/TrashcanForWork/IncidentReporterLA.html"<button id="btn-report-la" type="button">Report LA incident</button></a>
+    <button id="btn-report-pap" type="button">Report PAP incident</button>
+  </div>
+
+  <button type="button" onclick="location.reload()">Refresh window</button>
+
+</body>
+</html>
