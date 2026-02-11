@@ -33,5 +33,101 @@ if (currentScript && currentScript.parentNode) {
 </script>
 <!-- End of FlowHunt integration -->
 
+<script>
+(function () {
+  'use strict';
+
+  const HOST_ID = 'fh-chatbot-534edbef-d95b-49e2-bcba-28eca2d20e6f';
+  const STYLE_ID = 'fh-chatbot-panel-fix-style';
+  const WANT_HEIGHT = '98vh';
+
+  // apply fix inside an open shadowRoot; returns true if applied
+  function applyFixToHost(host) {
+    if (!host) return false;
+    const sr = host.shadowRoot;
+    if (!sr) return false; // cannot access closed shadowRoot
+
+    // inject a <style> into the shadow root (id scoped to sr)
+    if (!sr.querySelector('#' + STYLE_ID)) {
+      const style = document.createElement('style');
+      style.id = STYLE_ID;
+      style.textContent = `
+        /* be specific to avoid accidental matches */
+        .fh-chatbotPanel {
+          height: ${WANT_HEIGHT} !important;
+          max-height: none !important;
+        }
+      `;
+      try { sr.appendChild(style); } catch (e) { /* append failure unlikely for open sr */ }
+    }
+
+    // also set inline style on existing matching elements (defensive)
+    const panels = sr.querySelectorAll('.fh-chatbotPanel');
+    panels.forEach(el => {
+      try { el.style.setProperty('height', WANT_HEIGHT, 'important'); } catch (e) {}
+    });
+
+    // observe shadowRoot for future additions and reapply if needed
+    if (!applyFixToHost._observed) {
+      try {
+        const srObserver = new MutationObserver(() => {
+          // re-apply inline style for any panels added/changed
+          const p = sr.querySelectorAll('.fh-chatbotPanel');
+          p.forEach(el => el.style.setProperty('height', WANT_HEIGHT, 'important'));
+        });
+        srObserver.observe(sr, { childList: true, subtree: true });
+        applyFixToHost._observed = true;
+      } catch (e) {
+        // ignore observer errors
+      }
+    }
+
+    return true;
+  }
+
+  // Try immediate apply, then fall back to observers/polling
+  function init() {
+    const host = document.getElementById(HOST_ID);
+    if (applyFixToHost(host)) return;
+
+    // Observe DOM for host insertion
+    const docObserver = new MutationObserver((mutations, obs) => {
+      const h = document.getElementById(HOST_ID);
+      if (!h) return;
+      // if shadowRoot already present, apply; otherwise poll for shadowRoot
+      if (applyFixToHost(h)) {
+        obs.disconnect();
+        return;
+      }
+      // shadowRoot might be created a bit later by the loaded script — poll for it
+      const srPoll = setInterval(() => {
+        if (applyFixToHost(h)) {
+          clearInterval(srPoll);
+          obs.disconnect();
+        }
+      }, 250);
+    });
+
+    docObserver.observe(document.documentElement || document.body, { childList: true, subtree: true });
+
+    // Extra fallback: short poll in case MutationObserver misses something
+    const fallbackPoll = setInterval(() => {
+      const h = document.getElementById(HOST_ID);
+      if (h && applyFixToHost(h)) {
+        clearInterval(fallbackPoll);
+      }
+    }, 500);
+  }
+
+  // run on next tick; safe if the script is appended right after integration snippet
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
+</script>
+
 </body>
 </html>
