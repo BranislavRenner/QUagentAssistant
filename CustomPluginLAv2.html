@@ -36,8 +36,9 @@
     .pap:hover {
       background-color: #076cc5;
     }
-    .status:before {
-      background-image: ../StatusIcon.svg";
+    .status::before {
+      content: "";
+      background: url("../StatusIcon.svg") no-repeat center / contain;
     }
   </style>
 </head>
